@@ -1,12 +1,10 @@
 <template>
   <div class="content">
-    <div id="cnav">
-      <ul>
-        <li><router-link to="/recommend" active-class="actived">推荐</router-link></li>
-        <li><router-link to="/attention" active-class="actived">关注</router-link></li>
-        <li><router-link to="/hotsearch" active-class="actived">热榜</router-link></li>
-      </ul>
-    </div>
+      <el-tabs v-model="activeName" @tab-click="handleClick" style="margin-left: 14px;margin-right: 14px">
+        <el-tab-pane class="cnavitem" label="推荐" name="recommend"></el-tab-pane>
+        <el-tab-pane class="cnavitem" label="关注" name="attention"></el-tab-pane>
+        <el-tab-pane class="cnavitem" label="热榜" name="hotsearch"></el-tab-pane>
+      </el-tabs>
     <div id="ccon"></div>
   </div>
 </template>
@@ -19,7 +17,7 @@
     props:[''],
     data () {
       return {
-
+        activeName: 'recommend'
       };
     },
 
@@ -29,9 +27,21 @@
 
     beforeMount() {},
 
-    mounted() {},
+    mounted() {
+        if (!this.$cookies.get('loginStatus')){
+            this.$router.push('/login')
+        } else {
+            if (!this.$cookies.get('loginStatus').isLogin){
+                this.$router.push('/login')
+            }
+        }
+    },
 
-    methods: {},
+    methods: {
+      handleClick(){
+
+      },
+    },
 
     watch: {}
 
@@ -43,30 +53,6 @@
   width: 694px;
   height: 2640px;
 }
-#cnav *{
-  display: inline-block
-}
-#cnav {
-  width: 100%;
-  height: 59px;
-  border-bottom: 1px solid #eee;
-}
-#cnav ul li a{
-  width: 32px;
-  height: 58px;
-  margin: 0 22px;
-  font-size: 16px;
-  line-height: 58px;
-  text-align: center;
-  text-decoration:none;
-  color: #000;
-}
-#ccon {
-  width: 100%;
-  height: 2580px;
-}
-.actived {
-  color: #0084ff!important;
-}
+
 
 </style>

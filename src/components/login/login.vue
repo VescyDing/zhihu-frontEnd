@@ -50,32 +50,12 @@
     name:'',
     props:[''],
     data () {
-       var checkAge = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('年龄不能为空'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'));
-            } else {
-              callback();
-            }
-          }
-        }, 1000);
-      };
       return {
         ruleForm: {
-          age: '',
           account: '',
           password: ''
         },
         rules: {
-          age: [
-            { validator: checkAge, trigger: 'blur' }
-          ],
         }
       };
     },
@@ -88,14 +68,42 @@
 
     beforeMount() {},
 
-    mounted() {},
+    mounted() {
+      if (this.$cookies.get('loginStatus')){
+        if (this.$cookies.get('loginStatus').isLogin){
+          this.$router.push('/')
+        }
+      }
+    },
 
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
-            // console.log(valid, this._data.ruleForm.account, this._data.ruleForm.password)
+            const that = this
+            this.$axios.post('/login', that.ruleForm, res => {
+              // eslint-disable-next-line no-console
+              if (res.status != 200){
+                that.$message({
+                  showClose: true,
+                  message: res.data.message,
+                  type: 'error'
+                });
+              } else {
+                that.$message({
+                  showClose: true,
+                  message: res.data.message,
+                  type: 'success'
+                });
+                res.data.creatTime = new Date(res.data.creatTime).valueOf()
+                this.$router.push('/')
+                this.$cookies.set('loginStatus', {isLogin: true})
+                this.$cookies.set('userData', res.data)
+              }
+              console.log(res)
+
+            })
+
           } else {
             // console.log('error submit!!');
             return false;
@@ -221,7 +229,7 @@ html,body {
 #eyes {
   position: absolute;
   top: 152px;
-  right: 22px;
+  right: 35px;
   cursor: pointer;
 }
 .Login-socialLogin {

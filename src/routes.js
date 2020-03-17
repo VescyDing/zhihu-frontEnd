@@ -1,3 +1,5 @@
+  import index from './components/index'
+  import login from './components/login/login'
   import recommend from './components/main/content/recommend/recommend'
   import attention from './components/main/content/attention/attention'
   import hotsearch from './components/main/content/hotsearch/hotsearch'
@@ -6,20 +8,12 @@
   const routes = [
     {
       path: '/',
-      redirect: '/recommend'
+      component: index
     },
     {
-      path: '/recommend',
-      component: recommend
+      path: '/login',
+      component: login
     },
-    {
-      path: '/attention',
-      component: attention
-    },
-    {
-      path: '/hotsearch',
-      component: hotsearch
-    }
   ]
 
 export default routes

@@ -1,16 +1,23 @@
 <template>
   <div id="app">
-    <index />
+    <router-view/>
   </div>
 </template>
 
 <script>
-import index from './components/index'
 
 export default {
   name: 'app',
   components: {
-    index
+  },
+  data(){
+    return {
+    }
+  },
+  watch: {
+
+  },
+  mounted: function(){
   }
 }
 </script>
@@ -34,5 +41,4 @@ export default {
 html {
   min-width: 1000px;
 }
-
 </style>
