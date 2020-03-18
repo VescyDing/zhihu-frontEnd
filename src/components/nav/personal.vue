@@ -42,7 +42,14 @@
         this.$cookies.set('loginStatus', {isLogin: false})
         this.$cookies.set('userData', null)
         this.$router.push('/login')
+        window.location.reload()
       },
+      myhome(){
+        this.$router.push('/profile')
+      },
+      myset(){
+        this.$router.push('/setting')
+      }
     },
 
     watch: {}

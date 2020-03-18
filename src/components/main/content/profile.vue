@@ -1,5 +1,7 @@
 <template>
-    $END$
+    <div>
+开发中
+    </div>
 </template>
 
 <script>

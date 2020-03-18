@@ -82,6 +82,7 @@
           if (valid) {
             const that = this
             this.$axios.post('/login', that.ruleForm, res => {
+              console.log(res.data)
               // eslint-disable-next-line no-console
               if (res.status != 200){
                 that.$message({
@@ -95,13 +96,13 @@
                   message: res.data.message,
                   type: 'success'
                 });
-                res.data.creatTime = new Date(res.data.creatTime).valueOf()
-                this.$router.push('/')
+                res.data.userData.creatTime = new Date(res.data.userData.creatTime).valueOf()
                 this.$cookies.set('loginStatus', {isLogin: true})
                 this.$cookies.set('userData', res.data)
+                this.$router.push('/')
+                window.location.reload()
               }
               console.log(res)
-
             })
 
           } else {

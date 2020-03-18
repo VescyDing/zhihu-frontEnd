@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-container>
-      <el-header class="my-el-header">
+      <el-header class="my-el-header" v-if="showNav">
         <mynav />
         </el-header>
-      <el-main class="mainbgc">
-        <mymain />
+      <el-main :class="showNav?'mainbgc':'nomainbgc'">
+        <router-view/>
       </el-main>
     </el-container>
 
@@ -14,26 +14,27 @@
 
 <script>
   import mynav from './nav/nav'
-  import mymain from './main/main'
 
   export default {
     name:'',
     props:[''],
     data () {
       return {
+        showNav: this.$cookies.get('loginStatus').isLogin?this.$cookies.get('loginStatus').isLogin:false
       };
     },
 
     components: {
         mynav,
-        mymain
     },
 
     computed: {},
 
     beforeMount() {},
 
-    mounted() {},
+    mounted() {
+      console.log(this.$cookies.get('userData'))
+    },
 
     methods: {},
 
@@ -59,9 +60,11 @@
 .mainbgc {
   margin-top: 50px;
   width: 100%;
-  height: 2660px;
   background-color: rgb(246,246,246);
   padding-top: 10px;
-  padding-bottom: 0;
+  padding-bottom: 10px;
 }
+  .nomainbgc{
+    padding: 0!important;
+  }
 </style>

@@ -5,7 +5,7 @@
         <img id="logo" :src="logoUrl" />
         <div class="navopt">
           <ul>
-            <li class="navopt-hover">首页</li>
+            <li class="navopt-hover" @click="() => this.$router.push('/')">首页</li>
             <li>发现</li>
             <li>等你来答</li>
           </ul>
@@ -51,7 +51,7 @@
 import mysearch from "./search";
 import personal from "./personal";
 export default {
-  name: "",
+  name: "nav",
   props: [""],
   data() {
     return {

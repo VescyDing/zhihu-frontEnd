@@ -1,18 +1,27 @@
-  import index from './components/index'
+  import mymain from './components/main/main'
   import login from './components/login/login'
-  import recommend from './components/main/content/recommend/recommend'
-  import attention from './components/main/content/attention/attention'
-  import hotsearch from './components/main/content/hotsearch/hotsearch'
-  
+  import profile from './components/main/content/profile'
+  import setting from './components/main/content/setting'
+
+
+
 
   const routes = [
     {
       path: '/',
-      component: index
+      component: mymain
     },
     {
       path: '/login',
       component: login
+    },
+    {
+      path: '/profile',
+      component: profile
+    },
+    {
+      path: '/setting',
+      component: setting
     },
   ]
 
