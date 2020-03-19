@@ -69,6 +69,18 @@
                         </div>
                     </div>
                     <div class="Field">
+                        <h3 class="Field-label">职业经历</h3>
+                        <div class="Field-content" v-if="!inputShowCtrl.job">
+                            <span>{{userData.industry==''?'请填写行业信息':userData.job}}</span>
+                            <el-button @click="()=>{this.inputShowCtrl.job = true}" type="text" size="small" style="color: #175199;font-size: 15px" icon="el-icon-edit">{{userData.job!=''?'修改':'填写'}}</el-button>
+                        </div>
+                        <div class="Field-content" v-if="inputShowCtrl.job">
+                            <el-input v-model="userData.job" placeholder="请输入您所在的行业"></el-input>
+                            <el-button type="primary" style="font-size: 15px;margin-top: 10px" size="small" icon="el-icon-check" @click="updata('job')">确定</el-button>
+                            <el-button @click="()=>{this.inputShowCtrl.job = false}" type="" style="font-size: 15px;margin-top: 10px" size="small" icon="el-icon-close">取消</el-button>
+                        </div>
+                    </div>
+                    <div class="Field">
                         <h3 class="Field-label">教育经历</h3>
                         <div class="Field-content" v-if="!inputShowCtrl.education">
                             <span>{{userData.education==''?'添加教育经历':userData.education}}</span>
@@ -98,6 +110,7 @@
                     intro: "",
                     area: "",
                     industry: "",
+                    job: "",
                     education: "",
                     collect: [],
                     focus: [],
@@ -109,6 +122,7 @@
                 },
                 inputShowCtrl: {
                     gender: false,
+                    job: false,
                     intro: false,
                     area: false,
                     industry: false,
@@ -118,7 +132,7 @@
         },
         mounted() {
             if (this.$cookies.get('userData')){
-                this.userData = this.$cookies.get('userData')
+                this.userData = this.$cookies.get('userData').userData
                 console.log(this.$cookies.get('userData'))
             } else {
                 this.$router.push('/login')
