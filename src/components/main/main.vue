@@ -4,14 +4,13 @@
     <sticky id="sticky"/>
 
     <el-dialog 
-      title="提示"
+      title="提问"
       :visible.sync="this.$store.state.askShowCtrl"
-      width="30%"
+      width="40%"
       :before-close="handleClose"
       >
-      <span>这是一段信息</span>
+
       <span slot="footer" class="dialog-footer">
-        <el-button @click="this.askUnShow">取 消</el-button>
         <el-button type="primary" @click="this.askUnShow">确 定</el-button>
       </span>
     </el-dialog>
@@ -45,14 +44,10 @@
     },
 
     methods: {
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(() => {
-            done();
-          })
-          .catch(() => {});
+      handleClose() {
+        this.$store.state.askShowCtrl = false
       },
-      askUnShow(){
+      askUnShow(){ //这个方法写的有点天才
         this.$parent.$parent.$children[0].$children[0].$refs.nav.style.paddingRight = "16px"
         this.$store.state.askShowCtrl = false
       },

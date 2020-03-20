@@ -36,6 +36,12 @@
                                     <span>{{userData.area==''?'暂无信息':'现居'+userData.area}}</span>
                                 </div>
                             </div>
+                            <div class="ProfileHeader-detailItem">
+                                <span class="ProfileHeader-detailLabel">知龄</span>
+                                <div class="ProfileHeader-detailValue">
+                                    <span>{{timeInterval(Date.now(), userData.creatTime, true)}}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -47,7 +53,7 @@
                     <el-tab-pane label="回答" name="first" >
                         <div class="Profile-answers">
                             <div class="List-header"><span style="margin: 0">我的回答</span></div>
-                            <div style="width: 100%;height: 100%;text-align: center">
+                            <div style="width: 100%;height: 100%;text-align: center;margin-top: 25px">
                                 <span class="nodataicon">暂无回答</span>
                                 <br>
                                 <span class="nodataicon" style="font-size: 24px">不妨吃点东西</span>
@@ -62,6 +68,16 @@
                     <el-tab-pane label="提问" name="second">
                         <div class="Profile-answers">
                             <div class="List-header"><span style="margin: 0">我的提问</span></div>
+                            <div style="width: 100%;height: 100%;text-align: center;margin-top: 25px">
+                                <span class="nodataicon">暂无提问</span>
+                                <br>
+                                <span class="nodataicon" style="font-size: 24px">不妨吃点东西</span>
+                                <br>
+                                <i class="el-icon-tableware nodataicon" style="color: #ffcf00"></i>
+                                <i class="el-icon-cold-drink nodataicon" style="color: #43d480"></i>
+                                <i class="el-icon-milk-tea nodataicon" style="color: #0084ff"></i>
+                                <i class="el-icon-ice-drink nodataicon" style="color: #5478f0"></i>
+                            </div>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="动态" name="third">锐意开发中！<i class="el-icon-brush"></i></el-tab-pane>
@@ -145,7 +161,7 @@
         },
         mounted() {
             if (this.$cookies.get('userData')){
-                this.userData = this.$cookies.get('userData')
+                this.userData = this.$cookies.get('userData').userData
                 console.log(this.$cookies.get('userData'))
             } else {
                 this.$router.push('/login')
@@ -155,6 +171,39 @@
             handleClick(){
 
             },
+            timeInterval(Old, New, isHans){
+                Old=new Date(Old);
+                New=new Date(New);
+                let time=(Old.getTime()-New.getTime())/(24*60*60*1000);
+                let day=Math.floor(time);
+                time=(time-day)*24;
+                let hour=Math.floor(time);
+                time=(time-hour)*60;
+                let minute=Math.floor(time);
+                time=(time-minute)*60;
+                let second=Math.floor(time);
+                if (isHans){
+                    if (day>1){
+                        return day + '天'
+                    } else if (hour>1) {
+                        return hour + '小时'
+                    } else if (minute>1) {
+                        return minute + '分钟'
+                    } else {
+                        return second + '秒'
+                    }
+                } else {
+                    if (day>1){
+                        return day + 'days'
+                    } else if (hour>1) {
+                        return hour + 'hours'
+                    } else if (minute>1) {
+                        return minute + 'minutes'
+                    } else {
+                        return second + 'seconds'
+                    }
+                }
+            }
         },
     }
 </script>
@@ -252,7 +301,7 @@
     }
     .Profile-mainColumn {
         width: 694px;
-        min-height: 440px;
+        min-height: 476px;
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(26,26,26,.1);
         box-sizing: border-box;
