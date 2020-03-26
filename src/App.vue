@@ -62,4 +62,21 @@ html {
   padding-top: 10px;
   padding-bottom: 0;
 }
+
+ .content .ContentItem-actions {
+   padding: 0 20px!important;
+ }
+
+.questionTag  {
+  display: inline-block!important;
+  height: 30px!important;
+  padding: 0 12px!important;
+  font-size: 14px!important;
+  line-height: 30px!important;
+  color: #0084ff!important;
+  vertical-align: top!important;
+  border-radius: 100px!important;
+  background: rgba(0,132,255,.1)!important;
+  margin-right: 10px;
+}
 </style>

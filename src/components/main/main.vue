@@ -4,9 +4,8 @@
     <sticky id="sticky"/>
 
     <el-dialog 
-      :visible.sync="this.$store.state.askShowCtrl"
+      :visible.sync="$store.state.askShowCtrl"
       width="60%"
-      :before-close="handleClose"
       class="questionAdd"
       >
       <span slot="title" style="font-size: 20px;">
@@ -37,6 +36,7 @@
 
         <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="this.askUnShow">发布问题</el-button>
+          <el-button @click="() => this.$store.state.askShowCtrl = false">取消发布</el-button>
       </span>
 
     </el-dialog>
@@ -82,9 +82,6 @@
     },
 
     methods: {
-      handleClose() {
-        this.$store.state.askShowCtrl = false
-      },
       async askUnShow(){ //这个方法写的有点天才
         this.$parent.$parent.$children[0].$children[0].$refs.nav.style.paddingRight = "16px"
 
@@ -112,6 +109,7 @@
           }
         })
         this.$store.state.askShowCtrl = false
+        window.location.reload(true)
       },
       handleClose(tag) {
         this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
@@ -131,6 +129,7 @@
         }
         this.inputVisible = false;
         this.inputValue = '';
+        console.log(this.dynamicTags);
       }
     },
 

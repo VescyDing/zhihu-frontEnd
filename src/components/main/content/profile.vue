@@ -174,7 +174,7 @@
             timeInterval(Old, New, isHans){
                 Old=new Date(Old);
                 New=new Date(New);
-                let time=(Old.getTime()-New.getTime())/(24*60*60*1000);
+                let time=(New.getTime()-Old.getTime())/(24*60*60*1000);
                 let day=Math.floor(time);
                 time=(time-day)*24;
                 let hour=Math.floor(time);

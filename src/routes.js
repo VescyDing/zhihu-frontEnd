@@ -2,6 +2,7 @@
   import login from './components/login/login'
   import profile from './components/main/content/profile'
   import setting from './components/main/content/setting'
+  import question from './components/question/index'
 
 
 
@@ -22,6 +23,10 @@
     {
       path: '/setting',
       component: setting
+    },
+    {
+      path: '/question',
+      component: question
     },
   ]
 

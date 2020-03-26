@@ -63,6 +63,8 @@
   background-color: rgb(246,246,246);
   padding-top: 10px;
   padding-bottom: 10px;
+  position: relative;
+  overflow: hidden;
 }
   .nomainbgc{
     padding: 0!important;
