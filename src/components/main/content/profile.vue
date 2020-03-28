@@ -39,7 +39,7 @@
                             <div class="ProfileHeader-detailItem">
                                 <span class="ProfileHeader-detailLabel">知龄</span>
                                 <div class="ProfileHeader-detailValue">
-                                    <span>{{timeInterval(Date.now(), userData.creatTime, true)}}</span>
+                                    <span>{{timeInterval(userData.creatTime, Date.now(), true)}}</span>
                                 </div>
                             </div>
                         </div>

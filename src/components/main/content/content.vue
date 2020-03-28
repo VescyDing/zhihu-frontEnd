@@ -71,7 +71,8 @@
             }
         },
         goToQues(data){
-            this.$store.commit('selectedQues', data)
+            this.$store.commit('selectedQues', data) //做到后面发现存在vuex里在这里是比较愚蠢的做法，所以还是存在cookies里，即便页面刷新数据还在
+            this.$cookies.set('selectedQues', data)
             console.log(this.$store.getters['selectedQues']);
             this.$router.push('/question')
         },

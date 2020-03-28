@@ -71,7 +71,7 @@
                     <div class="Field">
                         <h3 class="Field-label">职业经历</h3>
                         <div class="Field-content" v-if="!inputShowCtrl.job">
-                            <span>{{userData.industry==''?'请填写行业信息':userData.job}}</span>
+                            <span>{{userData.job==''?'请填写行业信息':userData.job}}</span>
                             <el-button @click="()=>{this.inputShowCtrl.job = true}" type="text" size="small" style="color: #175199;font-size: 15px" icon="el-icon-edit">{{userData.job!=''?'修改':'填写'}}</el-button>
                         </div>
                         <div class="Field-content" v-if="inputShowCtrl.job">
@@ -158,7 +158,11 @@
                             message: res.data.message,
                             type: 'success'
                         });
-                        this.$cookies.set('userData', this.userData)
+                        this.$cookies.set('userData', {
+                            message: '更新后的用户数据',
+                            userData: this.userData
+                        })
+                        // this.$cookies.set('userData', res.data.newUserData)
                     }
                 })
                 this.inputShowCtrl[item] = false

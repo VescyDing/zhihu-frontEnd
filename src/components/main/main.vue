@@ -20,7 +20,9 @@
               v-for="tag in dynamicTags"
               closable
               :disable-transitions="false"
-              @close="handleClose(tag)">
+              @close="handleClose(tag)"
+              class="questionTag"
+              style="border: 0">
         {{tag}}
       </el-tag>
       <el-input
@@ -47,8 +49,8 @@
 <script>
   import mycontent from './content/content'
   import sticky from './sticky/sticky'
-
   import wangEditor from 'wangeditor'
+
   export default {
     name:'',
     props:[''],
