@@ -136,9 +136,6 @@
             console.log(this.$cookies.get('userData'));
             if (this.$cookies.get('userData')){
                 this.$axios.get('/user', {_id: this.$cookies.get('userData').userData._id}, res => {
-                    var strs = new Array()
-                    strs = res.data.userData.collect[0].split(',')
-                    res.data.userData.collect = strs
                     this.$cookies.set('userData', res.data)
                     this.userData = res.data.userData
                     this.init()
@@ -153,13 +150,13 @@
                 if (this.$store.getters['selectedQues']) {
                     this.selectedQues = this.$store.getters['selectedQues']
                     this.$axios.get('/user', {_id: this.selectedQues.creator}, res => {
+                        console.log(this.selectedQues);
                         this.creatorData = res.data.userData
                         this.selectedQues = this.$store.getters['selectedQues']
-                        var strs = new Array()
-                        strs = this.selectedQues.classify[0].split(',')
-                        this.dynamicTags = strs
+                        this.dynamicTags = JSON.parse(this.selectedQues.classify)
+                        this.userData.collect = JSON.parse(this.userData.collect)
+                        console.log(this.userData);
                         for (let i in this.userData.collect){
-                            console.log(this.userData.collect[i]);
                             if (this.userData.collect[i] == this.selectedQues._id){
                                 this.collected = true
                             }
@@ -182,13 +179,14 @@
                 let newData = userData.collect
                 newData.push(questionId)
                 let data = {
-                    collect: newData,
+                    collect: JSON.stringify(newData),
                     _id:    userData._id,
+                    questionId,
                 }
-                console.log(data);
-
                 this.$axios.post('/user/collect', data, res => {
-                    this.init()
+                    this.selectedQues = res.data.questionNewData
+                    this.selectedQues.startsCount += 1
+                    this.collected = true
                 })
             },
         },
@@ -233,7 +231,7 @@
         display: inline-block;
         height: 215px;
         position: absolute;
-        top: -50px;
+        top: 0px;
         right: 10px;
     }
     .avatar{

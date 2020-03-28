@@ -4,6 +4,7 @@ let http = axios.create({
     withCredentials: false, //https://segmentfault.com/q/1010000016904795/a-1020000016904951
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        //使用json会触发跨域，这里就只有先改回来
     },
     transformRequest: [function (data) {
         let newData = '';

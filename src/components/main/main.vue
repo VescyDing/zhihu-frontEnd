@@ -86,7 +86,7 @@
         this.$parent.$parent.$children[0].$children[0].$refs.nav.style.paddingRight = "16px"
 
         let postData = {
-          classify: this.dynamicTags,
+          classify: JSON.stringify(this.dynamicTags),
           title: this.input,
           content: this.editor.txt.html(),
           creator: this.$cookies.get('userData').userData._id

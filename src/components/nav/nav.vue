@@ -51,7 +51,7 @@
 import mysearch from "./search";
 import personal from "./personal";
 export default {
-  name: "nav",
+  name: "",
   props: [""],
   data() {
     return {
