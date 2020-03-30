@@ -25,7 +25,9 @@
                         <el-button size="small" type="primary" @click="collectAdd(userData, selectedQues._id)"
                                    :disabled="collected">{{collected?'已关注':'关注问题'}}
                         </el-button>
-                        <el-button size="small" :icon="addingAnswer?'el-icon-close':'el-icon-edit'" @click="()=>this.addingAnswer = !this.addingAnswer">{{addingAnswer?'关闭':'写回答'}}</el-button>
+                        <el-button size="small" :icon="addingAnswer?'el-icon-close':'el-icon-edit'"
+                                   @click="()=>this.addingAnswer = !this.addingAnswer">{{addingAnswer?'关闭':'写回答'}}
+                        </el-button>
                         <el-button size="small" icon="el-icon-share">邀请回答</el-button>
                         <button style="margin-left: 35px" type="button"
                                 class="Button Button--plain Button--withIcon Button--withLabel"><span
@@ -131,7 +133,9 @@
                     <div class="smallEditor">
                         <div id="editor">
                         </div>
-                        <el-button type="primary" @click="postAnswer" style="position: absolute;bottom: 10px;right: 30px;z-index: 999999" >提交回答</el-button>
+                        <el-button type="primary" @click="postAnswer"
+                                   style="position: absolute;bottom: 10px;right: 30px;z-index: 999999">提交回答
+                        </el-button>
                     </div>
                     <div class="AnswerForm-footerContent">
                         <i class="el-icon-info"></i>
@@ -175,10 +179,14 @@
                     </div>
                     <div class="ContentItem-actions">
                         <el-button style="color: #0084ff;background: rgba(0,132,255,.1);border: 0" size="mini"
-                                   type="primary" @click="startsOption({startsCount: item.startsCount+1, _id: item._id})" icon="el-icon-caret-top">赞同 &nbsp; {{item.startsCount}}
+                                   type="primary"
+                                   @click="startsOption({startsCount: item.startsCount+1, _id: item._id})"
+                                   icon="el-icon-caret-top">赞同 &nbsp; {{item.startsCount}}
                         </el-button>
                         <el-button style="margin-right: 40px;color: #0084ff;background: rgba(0,132,255,.1);border: 0"
-                                   size="mini" type="primary" @click="startsOption({startsCount: item.startsCount-1, _id: item._id})" icon="el-icon-caret-bottom"></el-button>
+                                   size="mini" type="primary"
+                                   @click="startsOption({startsCount: item.startsCount-1, _id: item._id})"
+                                   icon="el-icon-caret-bottom"></el-button>
                         <el-button size="mini" style="font-size: 14px;color: #8590a6" type="text"
                                    @click="showComment(item._id, item.commentCount)"
                                    icon="el-icon-chat-dot-round">{{item.commentCount}} &nbsp; 条评论
@@ -202,15 +210,17 @@
                     :visible.sync="commentShow"
                     width="688px"
                     class="comment"
-                    >
-                        <template slot="title">
-                                <span style="font-weight: bold"> {{selectedAnswerCommentCount}}&nbsp; 条评论</span>
-                        </template>
-                        <comment :answer-id="selectedAnswerId" />
-                        <span slot="footer" class="dialog-footer">
-                <el-button @click="commentShow = false">取 消</el-button>
-                <el-button type="primary" @click="commentShow = false">确 定</el-button>
-              </span>
+            >
+                <template slot="title">
+                    <span style="font-weight: bold"> {{selectedAnswerCommentCount}}&nbsp; 条评论</span>
+                </template>
+                <comment :answer-id="selectedAnswerId"/>
+                <span slot="footer" class="dialog-footer">
+                    <el-input v-model="commentVal" style="height: 38px;width: 574px; float: left;" placeholder="富强、民主、文明、和谐、自由、平等、公正、法治、爱国、敬业、诚信、友善"></el-input>
+                    <el-button type="primary" @click="postComment">
+                        发 布
+                    </el-button>
+                </span>
             </el-dialog>
         </div>
     </div>
@@ -218,7 +228,7 @@
 
 <script>
     import wangEditor from "wangeditor";
-    import comment from  "../comment/index"
+    import comment from "../comment/index"
 
     export default {
         name: "question",
@@ -247,6 +257,7 @@
                 commentShow: false,
                 selectedAnswerId: null,
                 selectedAnswerCommentCount: null,
+                commentVal: '',
             }
         },
         components: {
@@ -256,8 +267,8 @@
             console.log(this.$cookies.get('userData'));
             if (this.$cookies.get('userData')) {
                 this.$axios.get('/user', {_id: this.$cookies.get('userData').userData._id}, res => {
-                    console.log(res);
                     this.$cookies.set('userData', res.data)
+                    console.log(this.$cookies.get('userData'));
                     this.userData = res.data.userData
                     this.init()
                 })
@@ -276,16 +287,15 @@
                         this.answerList = res.data.answerList
                     })
 
-                    this.E =  this.wangEditor
+                    this.E = this.wangEditor
                     this.editor = new this.E('#editor')
                     this.editor.create()
                     this.$axios.get('/user', {_id: this.selectedQues.creator}, res => {
-                        console.log(this.selectedQues);
                         this.creatorData = res.data.userData
                         this.selectedQues = this.$cookies.get('selectedQues')
-                        this.dynamicTags = JSON.parse(this.selectedQues.classify)
-                        this.userData.collect = JSON.parse(this.userData.collect)
-                        console.log(this.userData);
+                        this.dynamicTags = JSON.parse(this.selectedQues.classify[0])
+                        this.userData.collect = JSON.parse(this.userData.collect[0])
+                        console.log(this.dynamicTags,  this.userData.collect);
                         for (let i in this.userData.collect) {
                             if (this.userData.collect[i] == this.selectedQues._id) {
                                 this.collected = true
@@ -319,19 +329,19 @@
                     this.collected = true
                 })
             },
-            postAnswer(){
+            postAnswer() {
                 let postData = {
                     targetQuestion: this.selectedQues._id,
                     content: this.editor.txt.html(),
-                    creator: this.checked?null:this.userData._id,
-                    creatorName: this.checked?'匿名':this.userData.name,
-                    creatorJob: this.checked?'未知':this.userData.job,
+                    creator: this.checked ? null : this.userData._id,
+                    creatorName: this.checked ? '匿名' : this.userData.name,
+                    creatorJob: this.checked ? '未知' : this.userData.job,
                 }
                 this.$axios.post('/answer', {
                     questionId: this.selectedQues._id,
                     postData: JSON.stringify(postData)
                 }, res => {
-                    if (res.status = 200){
+                    if (res.status = 200) {
                         this.$message({
                             showClose: true,
                             message: res.data.message,
@@ -350,18 +360,70 @@
 
                 })
             },
-            startsOption(data){
+            startsOption(data) {
                 this.$axios.put('/answer/startsCount', {
                     startsCount: data.startsCount,
-                    _id:    data._id,
+                    _id: data._id,
                 }, res => {
                     this.init()
                 })
             },
-            showComment(id, count){
+            showComment(id, count) {
                 this.selectedAnswerId = id
                 this.selectedAnswerCommentCount = count
-                this.commentShow = true
+                this.getComment(this.selectedAnswerId).then(_=>{
+                    this.commentShow = true
+                })
+            },
+            postComment(){
+                if (this.commentVal == ''){
+                    this.$message({
+                        showClose: true,
+                        message: '评论不能为空！',
+                        type: 'error'
+                    });
+                    return
+                }
+                let postData = {
+                    targetAnswer: this.selectedAnswerId,
+                    content: this.commentVal,
+                    creator: this.userData._id,
+                    creatorName: this.userData.name,
+                    replierName: '',
+                }
+                this.$axios.post('/comment', {
+                    postData: JSON.stringify(postData),
+                    answerId: this.selectedAnswerId
+                }, res => {
+                    if (res.status = 200) {
+                        this.$message({
+                            showClose: true,
+                            message: res.data.message,
+                            type: 'success'
+                        });
+                        this.getComment(this.selectedAnswerId).then(_=>{
+                            this.init()
+                        })
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: '出现未知错误，评论失败！',
+                            type: 'error'
+                        });
+                    }
+                })
+            },
+            getComment(answerId){
+                const that = this
+                let promise = new Promise(function (resolve, reject) {
+                    that.$axios.get('/comment', {
+                        answerId
+                    }, res => {
+                        that.$store.commit('commentList', res)
+                        resolve()
+                    })
+                })
+                return promise
             }
         },
 
@@ -587,8 +649,9 @@
         flex-shrink: 0;
         line-height: 38px;
     }
+
     #editor {
-        width: 100%!important;
+        width: 100% !important;
     }
 
     .AnswerForm-footerContent {

@@ -4,6 +4,7 @@ export default {
     askDisableCtrl: false,
     isLogin: false,
     selectedQues: null,
+    commentList: [],
   },
   getters: {
     isLogin(state){
@@ -15,6 +16,9 @@ export default {
     askDisableCtrl(state){
       return state.askDisableCtrl
     },
+    commentList(state){
+      return state.commentList
+    },
   },
   mutations: {
     selectedQues(state, res) {
@@ -25,6 +29,9 @@ export default {
     },
     askDisableCtrl(state, res) {
       state.askDisableCtrl = res
+    },
+    commentList(state, res) {
+      state.commentList = res
     },
   },
   dispatch: {

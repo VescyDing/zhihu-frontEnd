@@ -143,5 +143,17 @@
     }
     .comment .el-dialog__body{
         padding-top: 0!important;
+        padding-bottom: 0!important;
+    }
+
+    .comment .el-dialog__footer{
+        padding: 12px 20px;
+        background: #fff;
+        border-top: 1px solid #ebebeb;
+        box-sizing: border-box;
+    }
+
+    .comment .el-button--primary {
+        padding: 12px;
     }
 </style>
