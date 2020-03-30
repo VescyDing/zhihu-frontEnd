@@ -61,7 +61,7 @@
 #personal {
   height: 50px;
   float: right;
-  padding-top: 10px;
+  padding-top: 20px;
 }
 .icon {
   margin: 3px 20px;

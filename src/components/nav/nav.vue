@@ -1,7 +1,7 @@
 <template>
     <div class="nav" ref="nav">
         <div :class="{scrollCtrl: scrollCtrl, scrollCtrlEnd: !scrollCtrl}">
-            <div class="center">
+            <div class="center" style="transform: translateY(-10px)">
                 <img id="logo" :src="logoUrl"/>
                 <div class="navopt">
                     <ul>
@@ -13,7 +13,7 @@
                 <mysearch/>
                 <personal/>
             </div>
-            <div class="center">
+            <div class="center" style="transform: translateY(-30px)">
                 <img id="logo" :src="logoUrl"/>
                 <div id="cnav">
                     <ul>
@@ -99,7 +99,7 @@
     .right {
         position: absolute;
         right: 0;
-        top: 10px;
+        top: 20px;
     }
 
     .nav * {
