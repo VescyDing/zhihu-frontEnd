@@ -175,11 +175,12 @@
                     </div>
                     <div class="ContentItem-actions">
                         <el-button style="color: #0084ff;background: rgba(0,132,255,.1);border: 0" size="mini"
-                                   type="primary" @click="" icon="el-icon-caret-top">赞同 &nbsp; {{item.startsCount}}
+                                   type="primary" @click="startsOption({startsCount: item.startsCount+1, _id: item._id})" icon="el-icon-caret-top">赞同 &nbsp; {{item.startsCount}}
                         </el-button>
                         <el-button style="margin-right: 40px;color: #0084ff;background: rgba(0,132,255,.1);border: 0"
-                                   size="mini" type="primary" @click="" icon="el-icon-caret-bottom"></el-button>
+                                   size="mini" type="primary" @click="startsOption({startsCount: item.startsCount-1, _id: item._id})" icon="el-icon-caret-bottom"></el-button>
                         <el-button size="mini" style="font-size: 14px;color: #8590a6" type="text"
+                                   @click="showComment(item._id, item.commentCount)"
                                    icon="el-icon-chat-dot-round">{{item.commentCount}} &nbsp; 条评论
                         </el-button>
                         <el-button size="mini" style="font-size: 14px;color: #8590a6" type="text" icon="el-icon-share">
@@ -197,12 +198,27 @@
             <div class="Question-sideColumn Block">
 
             </div>
+            <el-dialog
+                    :visible.sync="commentShow"
+                    width="688px"
+                    class="comment"
+                    >
+                        <template slot="title">
+                                <span style="font-weight: bold"> {{selectedAnswerCommentCount}}&nbsp; 条评论</span>
+                        </template>
+                        <comment :answer-id="selectedAnswerId" />
+                        <span slot="footer" class="dialog-footer">
+                <el-button @click="commentShow = false">取 消</el-button>
+                <el-button type="primary" @click="commentShow = false">确 定</el-button>
+              </span>
+            </el-dialog>
         </div>
     </div>
 </template>
 
 <script>
     import wangEditor from "wangeditor";
+    import comment from  "../comment/index"
 
     export default {
         name: "question",
@@ -228,7 +244,13 @@
                 E: null,
                 editor: null,
                 answerList: [],
+                commentShow: false,
+                selectedAnswerId: null,
+                selectedAnswerCommentCount: null,
             }
+        },
+        components: {
+            comment
         },
         mounted() {
             console.log(this.$cookies.get('userData'));
@@ -239,14 +261,6 @@
                     this.userData = res.data.userData
                     this.init()
                 })
-                if (this.$cookies.get('selectedQues')) {
-                        this.$axios.get('/answer', {questionId: this.$cookies.get('selectedQues')._id}, res => {
-                            this.answerList = []
-                            this.answerList = res.data.answerList
-                        })
-                } else {
-                    return this.$router.go(-1)
-                }
             } else {
                 return this.$router.go(-1)
             }
@@ -256,6 +270,12 @@
             init() {
                 if (this.$cookies.get('selectedQues')) {
                     this.selectedQues = this.$cookies.get('selectedQues')
+                    //获取问题list
+                    this.$axios.get('/answer', {questionId: this.$cookies.get('selectedQues')._id}, res => {
+                        this.answerList = []
+                        this.answerList = res.data.answerList
+                    })
+
                     this.E =  this.wangEditor
                     this.editor = new this.E('#editor')
                     this.editor.create()
@@ -326,8 +346,23 @@
                     }
                     window.location.reload(true)
                     this.selectedQues.answerCount += 1
+                    this.$cookies.set('selectedQues', this.selectedQues)
+
                 })
             },
+            startsOption(data){
+                this.$axios.put('/answer/startsCount', {
+                    startsCount: data.startsCount,
+                    _id:    data._id,
+                }, res => {
+                    this.init()
+                })
+            },
+            showComment(id, count){
+                this.selectedAnswerId = id
+                this.selectedAnswerCommentCount = count
+                this.commentShow = true
+            }
         },
 
     }

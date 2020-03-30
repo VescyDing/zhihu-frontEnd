@@ -136,4 +136,12 @@
     ul, ol {
         margin: 10px 0 10px 20px;
     }
+
+    .comment .el-dialog__header {
+        border-bottom: 1px solid #f6f6f6!important;
+        padding-bottom: 20px!important;
+    }
+    .comment .el-dialog__body{
+        padding-top: 0!important;
+    }
 </style>
