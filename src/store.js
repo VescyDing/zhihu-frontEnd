@@ -5,6 +5,8 @@ export default {
     isLogin: false,
     selectedQues: null,
     commentList: [],
+    commentVal: '',
+    commentReload: false,
   },
   getters: {
     isLogin(state){
@@ -19,6 +21,12 @@ export default {
     commentList(state){
       return state.commentList
     },
+    commentVal(state){
+      return state.commentVal
+    },
+    commentReload(state){
+      return state.commentReload
+    },
   },
   mutations: {
     selectedQues(state, res) {
@@ -32,6 +40,12 @@ export default {
     },
     commentList(state, res) {
       state.commentList = res
+    },
+    commentVal(state, res) {
+      state.commentVal = res
+    },
+    commentReload(state, res) {
+      state.commentReload = res
     },
   },
   dispatch: {

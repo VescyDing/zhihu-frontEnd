@@ -18,7 +18,7 @@
                 </div>
                 <div style="width: 1000px;margin: 0 auto;position: relative">
                     <div class="QuestionHeader-main">
-                        <img class="avatar" :src="avatar"/>
+                        <img class="avatar" :src="avatar" @click="goDetail(creatorData._id)"/>
                         {{creatorData.name}} 的提问:
                         <div class="QuestionHeader-title">{{selectedQues.title}}</div>
                         <div class="QuestionHeader-detail" style="color: #666666" v-html="selectedQues.content"></div>
@@ -148,7 +148,7 @@
                 </div>
                 <div class="AnswerCard Block" v-for="item in answerList">
                     <div class="answer-head">
-                        <img class="avatar" style="display: inline-block;height: 38px;width: 38px;" :src="avatar"/>
+                        <img class="avatar" style="display: inline-block;height: 38px;width: 38px;" :src="avatar" @click="goDetail(item.creator)"/>
                         <div style="display: inline-block">
                             <div class="AuthorInfo-head">
                                 {{item.creatorName}}
@@ -257,7 +257,33 @@
                 commentShow: false,
                 selectedAnswerId: null,
                 selectedAnswerCommentCount: null,
-                commentVal: '',
+            }
+        },
+        computed: {
+            commentVal: {
+                get(){
+                    return this.$store.getters['commentVal']
+                },
+                set(val){
+                    return this.$store.commit('commentVal', val)
+                }
+            },
+            commentReload: {
+                get(){
+                    return this.$store.getters['commentReload']
+                },
+                set(val){
+                    return this.$store.commit('commentReload', val)
+                }
+            },
+        },
+        watch: {
+            commentReload(newVal, oldVal){
+                if (newVal){
+                    this.getComment(this.selectedAnswerId).then(_=>{
+                        this.commentShow = false
+                    })
+                }
             }
         },
         components: {
@@ -376,7 +402,7 @@
                 })
             },
             postComment(){
-                if (this.commentVal == ''){
+                if (this.$store.getters['commentVal'] == ''){
                     this.$message({
                         showClose: true,
                         message: '评论不能为空！',
@@ -386,7 +412,7 @@
                 }
                 let postData = {
                     targetAnswer: this.selectedAnswerId,
-                    content: this.commentVal,
+                    content: this.$store.getters['commentVal'],
                     creator: this.userData._id,
                     creatorName: this.userData.name,
                     replierName: '',
@@ -401,6 +427,7 @@
                             message: res.data.message,
                             type: 'success'
                         });
+                        this.$store.commit('commentVal', '')
                         this.getComment(this.selectedAnswerId).then(_=>{
                             this.init()
                         })
@@ -424,7 +451,15 @@
                     })
                 })
                 return promise
-            }
+            },
+            goDetail(id){
+                this.$router.push({
+                    name: 'profile',
+                    params: {
+                        tagerId: id
+                    }
+                })
+            },
         },
 
     }
@@ -479,6 +514,7 @@
         height: 28px;
         display: inline-block;
         margin-right: 10px;
+        cursor: pointer;
     }
 
     .QuestionHeader-tags {

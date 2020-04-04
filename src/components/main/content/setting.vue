@@ -200,6 +200,7 @@
         width: 168px;
         border: 4px solid #fff;
         border-radius: 8px;
+        cursor: pointer;
     }
     .ProfileHeader-content {
         padding-top: 16px;

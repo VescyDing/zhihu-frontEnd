@@ -52,7 +52,7 @@
                 <el-tabs v-model="activeName"  style="margin-left: 14px;margin-right: 14px" @tab-click="handleClick">
                     <el-tab-pane label="回答" name="first" >
                         <div class="Profile-answers">
-                            <div class="List-header"><span style="margin: 0">我的回答</span></div>
+                            <div class="List-header"><span style="margin: 0">{{others?'他':'我'}}的回答</span></div>
                             <div style="width: 100%;height: 100%;text-align: center;margin-top: 25px">
                                 <span class="nodataicon">暂无回答</span>
                                 <br>
@@ -67,7 +67,7 @@
                     </el-tab-pane>
                     <el-tab-pane label="提问" name="second">
                         <div class="Profile-answers">
-                            <div class="List-header"><span style="margin: 0">我的提问</span></div>
+                            <div class="List-header"><span style="margin: 0">{{others?'他':'我'}}的提问</span></div>
                             <div style="width: 100%;height: 100%;text-align: center;margin-top: 25px">
                                 <span class="nodataicon">暂无提问</span>
                                 <br>
@@ -157,10 +157,17 @@
                     name: null,
                 },
                 activeName: 'first',
+                others: false,
             }
         },
         mounted() {
-            if (this.$cookies.get('userData')){
+            if (this.$route.params.tagerId){
+                this.others = true
+                this.$axios.get('/user', {_id: this.$route.params.tagerId}, res => {
+                    this.userData = res.data.userData
+                })
+            } else if (this.$cookies.get('userData')){
+                this.others = false
                 this.userData = this.$cookies.get('userData').userData
                 console.log(this.$cookies.get('userData'))
             } else {
@@ -230,6 +237,7 @@
         width: 168px;
         border: 4px solid #fff;
         border-radius: 8px;
+        cursor: pointer;
     }
     .ProfileHeader-userCover {
         height: 132px;

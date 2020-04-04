@@ -160,6 +160,7 @@
     height: 40px;
     display: inline-block;
     margin-top: 10px;
+    cursor: pointer;
   }
 
   #editor {
